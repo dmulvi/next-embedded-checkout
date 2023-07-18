@@ -37,10 +37,10 @@ function App() {
               console.log('status changed');
               console.log(event?.payload?.totalPrice?.amount)
 
-              // setBreakdown({
-              //   total: 3,
-              //   fee: 1,
-              // });
+              setBreakdown({
+                total: 3,
+                fee: 1,
+              });
               
               break;
             default: 
