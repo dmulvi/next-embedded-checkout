@@ -19,20 +19,20 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@crossmint/client-sdk-base@^1.0.1-alpha.1":
-  version "1.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.0.1-alpha.1.tgz#ba18101948620d06f803d3f60d5d6e3017a4ab1a"
-  integrity sha512-sycBUndfXOlniY63gGtpEmtVGNQcifzuyLS/BUONCC187XeujwMZ/9zzbZtOFhhQXAds1tOetHgE+KoZdZm+Tg==
+"@crossmint/client-sdk-base@^1.0.1-alpha.3":
+  version "1.0.1-alpha.3"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.0.1-alpha.3.tgz#9c5ab68782e44e503eac6532b53996ed8265ebdb"
+  integrity sha512-shkjTJYgVN/kKXxbTGmX1ArpzLure6AWw1zrNEQFZ5jcTEDdG/8yYvzW2tFrrjYaIO6GTVo723mas2qWTv6+Ag==
   dependencies:
     exponential-backoff "^3.1.1"
     uuid "^8.3.2"
 
-"@crossmint/client-sdk-react-ui@^1.0.1-alpha.1":
-  version "1.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.0.1-alpha.1.tgz#faf531c99210a0a2adb9f927ac62e3023d44f2af"
-  integrity sha512-PTHh2yp2gZiqqVd6zpgfeTrc/TMSQLc8z8qQzWPOZ/ONS6/UdC8e5qXN32Y2ln7E8wTmBrG36XggnOdmgGAWRg==
+"@crossmint/client-sdk-react-ui@^1.0.1-alpha.3":
+  version "1.0.1-alpha.3"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.0.1-alpha.3.tgz#e0fbd578ede6f99dcd3afab86f47b302cc3aeab8"
+  integrity sha512-KmcEwhi1fkHUUobHEsvvTRbp4XZLPn9Fn/m129Y0Yu5Rt5tUi1WJ1VC5cYE0ayeaTZGawkvTODZowOPMEOMe2A==
   dependencies:
-    "@crossmint/client-sdk-base" "^1.0.1-alpha.1"
+    "@crossmint/client-sdk-base" "^1.0.1-alpha.3"
     react-jss "10.9.2"
     uuid "^8.3.2"
 
