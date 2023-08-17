@@ -11,16 +11,8 @@ interface PaymentCompletedPayload {
 function App() {
   const [order, setOrder] = useState<PaymentCompletedPayload | null>(null);
   
-  const setArbitraryOrder = () => {
-    setOrder({
-        orderIdentifier: "3a09a77d-6060-402b-9971-f6507aad6b0b"
-      });
-    };
-  
   return (
     <div className="App">
-      <button onClick={setArbitraryOrder}>Set arbitray order identifier</button>
-
       <CrossmintPaymentElement 
         projectId="b95fe68b-530b-4136-8821-d943ec2df7ac"
         collectionId="cba8a69c-c6ec-45c6-b202-d4288f6d2539"
@@ -30,7 +22,7 @@ function App() {
         // }}
         emailInputOptions={{
           show: true, 
-          // useStripeLink: true
+        // useStripeLink: true
         }}
         currency="USD"
         locale="en-US"
