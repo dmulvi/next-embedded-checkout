@@ -1,47 +1,122 @@
 "use client"; 
 
-import { useState } from "react";
-import { CrossmintPaymentElement } from "@crossmint/client-sdk-react-ui";
-import Minting from "./components/Minting";
+import { useState, useEffect, useRef } from "react";
+import { CrossmintPaymentElement, useCrossmintEvents } from "@crossmint/client-sdk-react-ui";
+import { JSONTree } from 'react-json-tree';
 
 interface PaymentCompletedPayload {
   orderIdentifier: string;
 }
 
 function App() {
-  const [order, setOrder] = useState<PaymentCompletedPayload | null>(null);
+  const [orderIdentifier, setOrderIdentifier] = useState<string | null>(null);
+  const [txnComplete, setTxnComplete] = useState<boolean>(false);
+  const [orderStarted, setOrderStarted] = useState<boolean>(false);
+  const [orderComplete, setOrderComplete] = useState<boolean>(false);
+  const [complete, setComplete] = useState<boolean>(false);
+  const [events, setEvents] = useState<any[]>([]);
+  const { listenToMintingEvents } = useCrossmintEvents({
+    environment: "staging",
+  });
+
+
+
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (events.length) {
+      ref.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  }, [events.length]);
+
+  if (orderIdentifier && !complete) {
+    // prevent constant polling
+    if (txnComplete && orderComplete) {
+      setComplete(true);
+      return;
+    }
+
+    listenToMintingEvents(
+      { orderIdentifier },
+      (event) => {
+
+        setEvents(events => [
+          ...events, 
+          event
+        ]);
+
+        switch (event.type) {
+          case "transaction:fulfillment.succeeded":
+          case "transaction:fulfillment.failed":
+            setTxnComplete(true);
+            break;
+          case "order:process.started":
+            setOrderStarted(true);
+            break;
+          case "order:process.finished":
+            setOrderComplete(true);
+            break;
+          default:
+            break;
+        }
+        console.log(event.type, ':', event)
+      }
+    );
+  }
   
   return (
-    <div className="App">
-      <CrossmintPaymentElement 
-        projectId="b95fe68b-530b-4136-8821-d943ec2df7ac"
-        collectionId="cba8a69c-c6ec-45c6-b202-d4288f6d2539"
-        environment="staging"
-        // recipient={{
-        //   wallet: "0x6C3b3225759Cbda68F96378A9F0277B4374f9F06"
-        // }}
-        emailInputOptions={{
-          show: true, 
-        // useStripeLink: true
-        }}
-        currency="USD"
-        locale="en-US"
-        mintConfig={{
-          quantity: "1",
-          totalPrice: "0.000778",
-          mintReferral: "0x6C3b3225759Cbda68F96378A9F0277B4374f9F06",
-          comment: ""
-        }}
-        onEvent={event => {
-          console.log(event);
-          if (event.type === "payment:process.succeeded") {
-            setOrder(event.payload);
-          }
-        }}
-      />
+    <div className="grid grid-cols-3 grid-flow-col gap-5">
       
-      {order?.orderIdentifier && <Minting orderIdentifier={order.orderIdentifier} />}
+      <div className="grid col-span-2">
 
+        <CrossmintPaymentElement 
+            projectId="e56a55e2-d4b1-4701-8709-2af6a73d9bb5"
+            collectionId="849002d8-83a0-4a80-886c-17360f067f93"
+            environment="staging"
+            emailInputOptions={{
+              show: true, 
+            }}
+            currency="USD"
+            locale="en-US"
+            mintConfig={{
+              _quantity: "1",
+              totalPrice: "0.0001",
+              _id: "3",
+            }}
+            onEvent={event => {
+              console.log(event);
+
+              setEvents(events => [
+                ...events, 
+                event
+              ]);
+
+              if (event.type === "payment:process.succeeded") {
+                setOrderIdentifier(event.payload.orderIdentifier);
+              }
+            }}
+          />
+
+      </div>
+      <div className="col-span-1">
+        <div className="flex-row overflow-y-auto event-window">
+          {events.map((event, index) => {
+            return (
+              <div key={index} className="flex flex-col items-center justify-center w-full">
+                <div className="flex items-center justify-between w-full event-title font-mono font-bold text-white">
+                  {event.type}
+                </div>
+                <div className="flex w-full text-secondary-text event-viewer">
+                    <JSONTree hideRoot data={event} />
+                </div>
+              </div>
+            );
+          })}
+          <div ref={ref} />
+        </div>
+        </div>
     </div>
   );
 }
