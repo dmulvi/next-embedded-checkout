@@ -20,7 +20,7 @@ body {
 }
 
 .event-window {
-  max-height: 560px;
+  max-height: 500px;
   width: 100%;
   font-size: 12px;
 }
